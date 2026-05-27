@@ -1,3 +1,6 @@
 <Solution>
   <Project Path="Reviews.Api/Reviews.Api.csproj" />
+  <Project Path="Reviews.Application/Reviews.Application.csproj" />
+  <Project Path="Reviews.Domain/Reviews.Domain.csproj" />
+  <Project Path="Reviews.Infrastructure/Reviews.Infrastructure.csproj" />
 </Solution>
