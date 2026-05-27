@@ -15,19 +15,19 @@ public class Review
     {
     }
 
-    public Review(Guid courseId, Guid userId, Rating rating, string text)
+    public Review(Guid courseId, Guid userId, int ratingValue, string text)
     {
         Id = Guid.NewGuid();
         CourseId = courseId;
         UserId = userId;
-        Rating = rating;
+        Rating = Rating.Create(ratingValue);
         SetText(text);
         CreatedAt = DateTime.UtcNow;
     }
 
-    public void UpdateReview(Rating rating, string text)
+    public void UpdateReview(int ratingValue, string text)
     {
-        Rating = rating;
+        Rating = Rating.Create(ratingValue);
         SetText(text);
         UpdatedAt = DateTime.UtcNow;
     }
