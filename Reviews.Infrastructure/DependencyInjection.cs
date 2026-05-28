@@ -3,6 +3,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Reviews.Infrastructure.Persistence;
+using Reviews.Application.Abstractions.Repositories;
+using Reviews.Infrastructure.Repositories;
 
 namespace Reviews.Infrastructure;
 
@@ -26,6 +28,8 @@ public static class DependencyInjection
                 options.UseSqlServer(connectionString);
             });
         }
+
+        services.AddScoped<IReviewRepository, ReviewRepository>();
 
         return services;
     }
