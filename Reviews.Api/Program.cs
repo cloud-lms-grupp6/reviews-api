@@ -1,4 +1,5 @@
 using Reviews.Infrastructure;
+using Reviews.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +11,17 @@ builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// automatically creates SQLite database (in development) if it does not exist
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+
+    var dbContext = scope.ServiceProvider
+        .GetRequiredService<ReviewsDbContext>();
+
+    dbContext.Database.EnsureCreated();
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();

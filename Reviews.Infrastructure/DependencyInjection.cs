@@ -23,7 +23,7 @@ public static class DependencyInjection
         {
             services.AddDbContext<ReviewsDbContext>(options =>
             {
-                options.UseNpgsql(connectionString);
+                options.UseSqlServer(connectionString);
             });
         }
 
