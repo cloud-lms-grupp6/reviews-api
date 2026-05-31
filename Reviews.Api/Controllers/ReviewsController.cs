@@ -2,15 +2,17 @@ using Microsoft.AspNetCore.Mvc;
 using Reviews.Api.Contracts;
 using Reviews.Application.CreateReview;
 using Reviews.Application.UpdateReview;
+using Reviews.Application.DeleteReview;
 
 namespace Reviews.Api.Controllers;
 
 [ApiController]
 [Route("api/courses/{courseId:guid}/reviews")]
-public class ReviewsController(ICreateReviewService createReviewService, IUpdateReviewService updateReviewService) : ControllerBase
+public class ReviewsController(ICreateReviewService createReviewService, IUpdateReviewService updateReviewService, IDeleteReviewService deleteReviewService) : ControllerBase
 {
     private readonly ICreateReviewService _createReviewService = createReviewService;
     private readonly IUpdateReviewService _updateReviewService = updateReviewService;
+    private readonly IDeleteReviewService _deleteReviewService = deleteReviewService;
 
     [HttpPost]
     public async Task<IActionResult> CreateReview(Guid courseId, CreateReviewRequest request, CancellationToken cancellationToken)
@@ -55,6 +57,21 @@ public class ReviewsController(ICreateReviewService createReviewService, IUpdate
         catch (ArgumentException exception)
         {
             return BadRequest(exception.Message);
+        }
+    }
+
+    [HttpDelete]
+    // [FromQuery] to be replaced when JWT is implemented
+    public async Task<IActionResult> DeleteReview([FromQuery] Guid userId, Guid courseId, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await _deleteReviewService.DeleteAsync(courseId, userId, cancellationToken);
+            return NoContent();
+        }
+        catch (InvalidOperationException exception)
+        {
+            return NotFound(exception.Message);
         }
     }
 }
