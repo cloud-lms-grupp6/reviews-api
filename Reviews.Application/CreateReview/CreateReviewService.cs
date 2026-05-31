@@ -14,8 +14,7 @@ public class CreateReviewService(IReviewRepository reviewRepository) : ICreateRe
 
         if (reviewAlreadyExists)
         {
-            throw new InvalidOperationException(
-                "User has already reviewed this course.");
+            throw new InvalidOperationException("User has already reviewed this course.");
         }
 
         var review = new Review(courseId, userId, rating, text);
