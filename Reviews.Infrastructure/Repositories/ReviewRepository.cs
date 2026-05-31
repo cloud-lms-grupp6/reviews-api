@@ -26,4 +26,18 @@ public class ReviewRepository(ReviewsDbContext dbContext) : IReviewRepository
     {
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task<Review?> GetByCourseAndUserAsync(Guid courseId, Guid userId, CancellationToken cancellationToken)
+    {
+        return await _dbContext.Reviews
+            .FirstOrDefaultAsync(
+                review => review.CourseId == courseId && review.UserId == userId, cancellationToken);
+    }
+
+    public Task DeleteAsync(Review review, CancellationToken cancellationToken)
+    {
+        _dbContext.Reviews.Remove(review);
+
+        return Task.CompletedTask;
+    }
 }
