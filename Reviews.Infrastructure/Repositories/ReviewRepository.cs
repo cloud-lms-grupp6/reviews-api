@@ -30,8 +30,7 @@ public class ReviewRepository(ReviewsDbContext dbContext) : IReviewRepository
     public async Task<Review?> GetByCourseAndUserAsync(Guid courseId, Guid userId, CancellationToken cancellationToken)
     {
         return await _dbContext.Reviews
-            .FirstOrDefaultAsync(
-                review => review.CourseId == courseId && review.UserId == userId, cancellationToken);
+            .FirstOrDefaultAsync(review => review.CourseId == courseId && review.UserId == userId, cancellationToken);
     }
 
     public Task DeleteAsync(Review review, CancellationToken cancellationToken)
@@ -39,5 +38,20 @@ public class ReviewRepository(ReviewsDbContext dbContext) : IReviewRepository
         _dbContext.Reviews.Remove(review);
 
         return Task.CompletedTask;
+    }
+
+    public async Task<List<Review>> GetByCourseIdAsync(Guid courseId, int skip, int take, CancellationToken cancellationToken)
+    {
+        return await _dbContext.Reviews
+            .Where(review => review.CourseId == courseId)
+            .OrderByDescending(review => review.CreatedAt)
+            .Skip(skip)
+            .Take(take)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<int> CountByCourseIdAsync(Guid courseId, CancellationToken cancellationToken)
+    {
+        return await _dbContext.Reviews.CountAsync(review => review.CourseId == courseId, cancellationToken);
     }
 }

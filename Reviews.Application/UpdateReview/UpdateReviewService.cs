@@ -12,8 +12,7 @@ public class UpdateReviewService(IReviewRepository reviewRepository) : IUpdateRe
 
         if (review is null)
         {
-            throw new InvalidOperationException(
-                "Review was not found for this user and course.");
+            throw new InvalidOperationException("Review was not found for this user and course.");
         }
 
         review.UpdateReview(rating, text);
