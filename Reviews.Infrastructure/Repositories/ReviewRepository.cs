@@ -54,4 +54,12 @@ public class ReviewRepository(ReviewsDbContext dbContext) : IReviewRepository
     {
         return await _dbContext.Reviews.CountAsync(review => review.CourseId == courseId, cancellationToken);
     }
+
+    public async Task<List<int>> GetRatingsByCourseIdAsync(Guid courseId, CancellationToken cancellationToken)
+    {
+        return await _dbContext.Reviews
+            .Where(review => review.CourseId == courseId)
+            .Select(review => review.Rating.Value)
+            .ToListAsync(cancellationToken);
+    }
 }
