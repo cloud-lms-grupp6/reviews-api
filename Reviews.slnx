@@ -3,4 +3,5 @@
   <Project Path="Reviews.Application/Reviews.Application.csproj" />
   <Project Path="Reviews.Domain/Reviews.Domain.csproj" />
   <Project Path="Reviews.Infrastructure/Reviews.Infrastructure.csproj" />
+  <Project Path="Reviews.Tests/Reviews.Tests.csproj" />
 </Solution>
