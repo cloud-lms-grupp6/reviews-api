@@ -24,6 +24,11 @@ public class ReviewsController(
     private readonly IGetRatingSummaryService _getRatingSummaryService = getRatingSummaryService;
 
     [HttpPost]
+    [EndpointSummary("Create a review for a course")]
+    [EndpointDescription("Creates a review for the specified course. A user can only create one review per course.")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> CreateReview(Guid courseId, CreateReviewRequest request, CancellationToken cancellationToken)
     {
         try
@@ -52,6 +57,11 @@ public class ReviewsController(
     }
 
     [HttpPut]
+    [EndpointSummary("Update an existing review")]
+    [EndpointDescription("Updates the rating and text of an existing review for the specified course.")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateReview(Guid courseId, UpdateReviewRequest request, CancellationToken cancellationToken)
     {
         try
@@ -70,6 +80,10 @@ public class ReviewsController(
     }
 
     [HttpDelete]
+    [EndpointSummary("Delete a review")]
+    [EndpointDescription("Deletes the user's review for the specified course.")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     // [FromQuery] to be replaced when JWT is implemented
     public async Task<IActionResult> DeleteReview([FromQuery] Guid userId, Guid courseId, CancellationToken cancellationToken)
     {
@@ -85,6 +99,10 @@ public class ReviewsController(
     }
 
     [HttpGet]
+    [EndpointSummary("Get reviews for a course")]
+    [EndpointDescription("Returns a paginated list of reviews for the specified course ordered by newest first.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetCourseReviews(Guid courseId, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, CancellationToken cancellationToken = default)
     {
         try
@@ -99,6 +117,9 @@ public class ReviewsController(
     }
 
     [HttpGet("rating-summary")]
+    [EndpointSummary("Get course rating summary")]
+    [EndpointDescription("Returns the average rating, rating distribution, percentages, and total review count for the specified course.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetRatingSummary(Guid courseId, CancellationToken cancellationToken)
     {
         var result = await _getRatingSummaryService.GetSummaryAsync(courseId, cancellationToken);
