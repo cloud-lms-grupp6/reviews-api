@@ -9,4 +9,7 @@ public interface IReviewRepository
     Task SaveChangesAsync(CancellationToken cancellationToken);
     Task<Review?> GetByCourseAndUserAsync(Guid courseId, Guid userId, CancellationToken cancellationToken);
     Task DeleteAsync(Review review, CancellationToken cancellationToken);
+    Task<List<Review>> GetByCourseIdAsync(Guid courseId, int skip, int take, CancellationToken cancellationToken);
+    Task<int> CountByCourseIdAsync(Guid courseId, CancellationToken cancellationToken);
+    Task<List<int>> GetRatingsByCourseIdAsync(Guid courseId, CancellationToken cancellationToken);
 }

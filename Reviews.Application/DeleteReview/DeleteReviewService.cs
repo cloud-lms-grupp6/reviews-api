@@ -12,13 +12,11 @@ public class DeleteReviewService(IReviewRepository reviewRepository) : IDeleteRe
 
         if (review is null)
         {
-            throw new InvalidOperationException(
-                "Review was not found for this user and course.");
+            throw new InvalidOperationException("Review was not found for this user and course.");
         }
 
         await _reviewRepository.DeleteAsync(review, cancellationToken);
 
-        await _reviewRepository.SaveChangesAsync(
-            cancellationToken);
+        await _reviewRepository.SaveChangesAsync(cancellationToken);
     }
 }
