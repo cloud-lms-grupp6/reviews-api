@@ -35,7 +35,9 @@ public class ReviewsController(
     {
         try
         {
-            var review = await _createReviewService.CreateAsync(courseId, request.UserId, request.Rating, request.Text, cancellationToken);
+            var userId = Guid.Parse(User.FindFirst("uid")!.Value);
+
+            var review = await _createReviewService.CreateAsync(courseId, userId, request.Rating, request.Text, cancellationToken);
 
             return Created($"/api/courses/{courseId}/reviews/{review.Id}",
                 new
@@ -69,7 +71,9 @@ public class ReviewsController(
     {
         try
         {
-            await _updateReviewService.UpdateAsync(courseId, request.UserId, request.Rating, request.Text, cancellationToken);
+            var userId = Guid.Parse(User.FindFirst("uid")!.Value);
+
+            await _updateReviewService.UpdateAsync(courseId, userId, request.Rating, request.Text, cancellationToken);
             return NoContent();
         }
         catch (InvalidOperationException exception)
@@ -88,11 +92,12 @@ public class ReviewsController(
     [EndpointDescription("Deletes the user's review for the specified course.")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    // [FromQuery] to be replaced when JWT is implemented
-    public async Task<IActionResult> DeleteReview([FromQuery] Guid userId, Guid courseId, CancellationToken cancellationToken)
+    public async Task<IActionResult> DeleteReview(Guid courseId, CancellationToken cancellationToken)
     {
         try
         {
+            var userId = Guid.Parse(User.FindFirst("uid")!.Value);
+
             await _deleteReviewService.DeleteAsync(courseId, userId, cancellationToken);
             return NoContent();
         }
