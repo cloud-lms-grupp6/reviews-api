@@ -5,6 +5,7 @@ using Reviews.Application.UpdateReview;
 using Reviews.Application.DeleteReview;
 using Reviews.Application.GetCourseReviews;
 using Reviews.Application.GetRatingSummary;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Reviews.Api.Controllers;
 
@@ -23,6 +24,7 @@ public class ReviewsController(
     private readonly IGetCourseReviewsService _getCourseReviewsService = getCourseReviewsService;
     private readonly IGetRatingSummaryService _getRatingSummaryService = getRatingSummaryService;
 
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> CreateReview(Guid courseId, CreateReviewRequest request, CancellationToken cancellationToken)
     {
@@ -51,6 +53,7 @@ public class ReviewsController(
         }
     }
 
+    [Authorize]
     [HttpPut]
     public async Task<IActionResult> UpdateReview(Guid courseId, UpdateReviewRequest request, CancellationToken cancellationToken)
     {
@@ -69,6 +72,7 @@ public class ReviewsController(
         }
     }
 
+    [Authorize]
     [HttpDelete]
     // [FromQuery] to be replaced when JWT is implemented
     public async Task<IActionResult> DeleteReview([FromQuery] Guid userId, Guid courseId, CancellationToken cancellationToken)
