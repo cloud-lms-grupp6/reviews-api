@@ -5,6 +5,7 @@ using Reviews.Application.UpdateReview;
 using Reviews.Application.DeleteReview;
 using Reviews.Application.GetCourseReviews;
 using Reviews.Application.GetRatingSummary;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Reviews.Api.Controllers;
 
@@ -23,6 +24,7 @@ public class ReviewsController(
     private readonly IGetCourseReviewsService _getCourseReviewsService = getCourseReviewsService;
     private readonly IGetRatingSummaryService _getRatingSummaryService = getRatingSummaryService;
 
+    [Authorize]
     [HttpPost]
     [EndpointSummary("Create a review for a course")]
     [EndpointDescription("Creates a review for the specified course. A user can only create one review per course.")]
@@ -56,6 +58,7 @@ public class ReviewsController(
         }
     }
 
+    [Authorize]
     [HttpPut]
     [EndpointSummary("Update an existing review")]
     [EndpointDescription("Updates the rating and text of an existing review for the specified course.")]
@@ -79,6 +82,7 @@ public class ReviewsController(
         }
     }
 
+    [Authorize]
     [HttpDelete]
     [EndpointSummary("Delete a review")]
     [EndpointDescription("Deletes the user's review for the specified course.")]
